@@ -1,0 +1,14 @@
+[package]
+name = "slack_eltasko"
+version = "0.1.0"
+authors = ["sattel"]
+edition = "2018"
+
+[dependencies]
+iron = "*"
+router = "*"
+log = "*"
+bodyparser = {git = "https://github.com/iron/body-parser.git"}
+persistent = "*"
+urlencoded = "*"
+regex = "1"
