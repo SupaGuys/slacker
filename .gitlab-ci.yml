@@ -1,5 +1,6 @@
 stages:
   - build
+  - test and break
 
 before_script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -10,9 +11,11 @@ build:
   script:
     -  docker build -t registry.gitlab.com/satt3l/slacker:latest --file build/Dockerfile .
     -  docker push registry.gitlab.com/satt3l/slacker:latest
-
+  except:
+    - /fuck$/
 
 shit:
+  stage: test and break
   tags:
     - shell_builder
   script:
