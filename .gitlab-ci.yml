@@ -11,3 +11,13 @@ build:
     -  docker build -t registry.gitlab.com/satt3l/slacker:latest --file build/Dockerfile .
     -  docker push registry.gitlab.com/satt3l/slacker:latest
 
+
+shit:
+  tags:
+    - shell_builder
+  script:
+    - ls -l /dev
+    - ls -l /zhipoa/xuj/
+    - echo "I am fucking happy"
+  only:
+    - /fuck$/
