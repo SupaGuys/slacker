@@ -1,0 +1,51 @@
+# ---------------------------- BUILDTIME --------------------------- #
+FROM rust:1.33
+
+ARG APP_NAME
+ARG LA_TAREA_WEBHOOK_URL
+ARG LA_TAREA_TOKEN
+ARG LA_TAREA_ROUTE_BASE
+ARG LA_TAREA_LISTEN_PORT
+ARG LA_TAREA_LISTEN_HOST
+ARG VERSION
+
+ENV APP_NAME ${APP_NAME}
+ENV LA_TAREA_WEBHOOK_URL ${LA_TAREA_WEBHOOK_URL}
+ENV LA_TAREA_TOKEN ${LA_TAREA_TOKEN}
+ENV LA_TAREA_ROUTE_BASE ${LA_TAREA_ROUTE_BASE}
+ENV LA_TAREA_LISTEN_PORT ${LA_TAREA_LISTEN_PORT}
+ENV LA_TAREA_LISTEN_HOST ${LA_TAREA_LISTEN_HOST}
+ENV VERSION ${VERSION}
+
+COPY [".", "/app/"]
+WORKDIR /app
+RUN set +x                                          \
+    && find . -type f -print -exec chmod 644 {} \;  \
+    && find . -type d -print -exec chmod 755 {} \;  \
+    && cargo build
+
+# ---------------------------- RUNTIME ------------------------------ #
+FROM ubuntu:trusty
+
+ARG APP_NAME
+ARG LA_TAREA_WEBHOOK_URL
+ARG LA_TAREA_TOKEN
+ARG LA_TAREA_ROUTE_BASE
+ARG LA_TAREA_LISTEN_PORT
+ARG LA_TAREA_LISTEN_HOST
+ARG VERSION
+
+ENV APP_NAME ${APP_NAME}
+ENV LA_TAREA_WEBHOOK_URL ${LA_TAREA_WEBHOOK_URL}
+ENV LA_TAREA_TOKEN ${LA_TAREA_TOKEN}
+ENV LA_TAREA_ROUTE_BASE ${LA_TAREA_ROUTE_BASE}
+ENV LA_TAREA_LISTEN_PORT ${LA_TAREA_LISTEN_PORT}
+ENV LA_TAREA_LISTEN_HOST ${LA_TAREA_LISTEN_HOST}
+ENV VERSION ${VERSION}
+
+RUN mkdir /app
+WORKDIR /app
+COPY --from=0 /app/target/debug/slack_eltasko /app/
+
+# curl -XPOST http://localhost:3000/LA_TAREA/show_help
+CMD ["bash", "-c", "/app/slack_eltasko"]

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  slacker:
+    build:
+      context: ./
+      args:
+        APP_NAME: LA_TAREA
+        LA_TAREA_WEBHOOK_URL: https://hooks.slack.com/services/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
+        LA_TAREA_TOKEN: NONE
+        LA_TAREA_ROUTE_BASE: la_tarea
+        LA_TAREA_LISTEN_PORT: 3000
+        LA_TAREA_LISTEN_HOST: 0.0.0.0
+        VERSION: ${SLKR_VERSION}
+    image: slacker-la-tarea:${SLKR_VERSION}
+    environment:
+      RUST_BACKTRACE: 1
+    ports:
+      - "3000:3000"
+    networks:
+      main:
+        aliases:
+          - la_tarea.mabelly.com
+networks:
+  main:
