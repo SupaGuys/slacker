@@ -11,6 +11,7 @@
 *.swp
 **/*.rs.bk
 /build/
+/dev/
 /target/
 CHANGELOG.md
 docker-compose.yml
